@@ -19,48 +19,45 @@
 
 <section class="section" style="border-bottom:none;">
   <div class="wrap">
-    <div class="doc-list">
-      <div class="doc-list-item">
-        <div>
-          <div class="doc-meta"><span class="doc-type">Bài giảng</span><span class="doc-date">12/05/2024</span></div>
-          <h4 class="doc-title">Giải tích 1 – Toán cao cấp</h4>
-          <p class="doc-desc">Tài liệu tóm tắt lý thuyết và bài tập có lời giải chi tiết.</p>
-          <p class="doc-author">Nguyễn Văn A · ĐH Bách Khoa</p>
-        </div>
-        <button class="save-btn">Lưu</button>
-      </div>
-      <div class="doc-list-item">
-        <div>
-          <div class="doc-meta"><span class="doc-type">Sách tham khảo</span><span class="doc-date">10/05/2024</span></div>
-          <h4 class="doc-title">Kinh tế vĩ mô – Pindyck</h4>
-          <p class="doc-desc">Tóm tắt nội dung chính và các ví dụ minh họa dễ hiểu.</p>
-          <p class="doc-author">Trần Thị B · UEH</p>
-        </div>
-        <button class="save-btn">Lưu</button>
-      </div>
-      <div class="doc-list-item">
-        <div>
-          <div class="doc-meta"><span class="doc-type">Báo cáo</span><span class="doc-date">08/05/2024</span></div>
-          <h4 class="doc-title">Báo cáo QoS mạng 5G</h4>
-          <p class="doc-desc">Phân tích chất lượng dịch vụ và đánh giá hiệu năng mạng 5G.</p>
-          <p class="doc-author">Lê Minh C · ĐH Công nghệ</p>
-        </div>
-        <button class="save-btn">Lưu</button>
-      </div>
-      <div class="doc-list-item">
-        <div>
-          <div class="doc-meta"><span class="doc-type">Bài nghiên cứu</span><span class="doc-date">07/05/2024</span></div>
-          <h4 class="doc-title">Deep learning for medical image analysis</h4>
-          <p class="doc-desc">A survey on recent advances and applications.</p>
-          <p class="doc-author">John Doe · MIT</p>
-        </div>
-        <button class="save-btn">Lưu</button>
-      </div>
+    <div class="doc-list" id="fullList">
+      <p class="empty-state">Đang tải dữ liệu...</p>
     </div>
   </div>
 </section>
 
 <div id="usrd-footer"></div>
 <script src="js/partials.js"></script>
+<script src="js/data.js"></script>
+<script>
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  async function renderFullList() {
+    const list = document.getElementById("fullList");
+    const docs = await usrdLoadDocuments();
+
+    if (docs.length === 0) {
+      list.innerHTML = '<p class="empty-state">Chưa có tài liệu nào. Thêm dữ liệu vào Google Sheet để hiển thị ở đây.</p>';
+      return;
+    }
+
+    list.innerHTML = docs.map(doc => `
+      <div class="doc-list-item">
+        <div>
+          <div class="doc-meta"><span class="doc-type">${escapeHtml(doc.type || "Tài liệu")}</span></div>
+          <h4 class="doc-title">${escapeHtml(doc.title)}</h4>
+          <p class="doc-desc">${escapeHtml(doc.desc)}</p>
+          <p class="doc-author">${escapeHtml(doc.author || "Chưa rõ tác giả")}</p>
+        </div>
+        <a class="save-btn" href="${escapeHtml(doc.fileLink)}" target="_blank" rel="noopener">Xem tài liệu</a>
+      </div>
+    `).join("");
+  }
+
+  renderFullList();
+</script>
 </body>
 </html>

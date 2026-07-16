@@ -38,10 +38,27 @@ usrd-website/
 2. Bấm biểu tượng cây bút (Edit) → sửa nội dung → bấm **"Commit changes"**
 3. **Xong!** Vercel tự động phát hiện thay đổi và cập nhật website trong ~30 giây, không cần làm gì thêm
 
-## 📝 Về phần "Tra cứu"
-Trang `tra-cuu.html` hiện tra cứu trên dữ liệu mẫu viết sẵn trong file (biến `documents` ở cuối file). Đây là bản demo để bạn thấy chức năng tìm kiếm hoạt động — lọc theo từ khóa và loại tài liệu ngay trên trình duyệt, không cần server.
+## 📝 Cách đăng tài liệu mới hàng ngày (KHÔNG cần sửa code)
 
-Khi có nhiều tài liệu và cần cập nhật hàng ngày, bước tiếp theo nên chuyển sang nguồn dữ liệu ngoài (Google Sheet hoặc CMS) để không phải sửa code mỗi lần — mình có thể làm bước này sau khi bạn xác nhận đã deploy thành công bản hiện tại.
+Website đã được nối với 1 **Google Sheet** — đây là nơi duy nhất bạn cần vào để thêm tài liệu.
+
+### Cấu trúc Sheet (đúng 6 cột, đừng đổi tên cột)
+```
+Tên | Loại | Tác giả | Mô tả | Link file | Trạng thái
+```
+
+### Quy trình đăng bài
+1. Mở Google Sheet đang dùng (link Sheet đang publish ở biến `USRD_SHEET_CSV_URL` trong file `js/data.js`)
+2. Thêm 1 hàng mới ở cuối, điền đủ: Tên, Loại, Tác giả, Mô tả, Link file (dán link Google Drive của file PDF/Word)
+3. **Xong!** Không cần "Publish" lại — Sheet đã publish 1 lần là link luôn tự động cập nhật theo dữ liệu mới nhất
+4. Refresh lại website (Trang chủ, Tra cứu, Đề xuất) sẽ thấy tài liệu mới ngay lập tức
+
+### Nếu muốn đổi sang Sheet khác
+Mở file `js/data.js` → sửa dòng đầu tiên `USRD_SHEET_CSV_URL` → thay bằng link CSV mới → Commit trên GitHub.
+
+### Lưu ý về link file
+- Tài liệu (PDF/Word) nên để trên **Google Drive**, sau đó lấy link **"Bất kỳ ai có link đều xem được"** rồi dán vào cột "Link file"
+- Không upload trực tiếp file vào GitHub (không tối ưu cho file lớn)
 
 ## 🔤 Font chữ
 Dùng **Be Vietnam Pro** (phần thân) và **Source Serif 4** (tiêu đề) từ Google Fonts — cả hai đều hỗ trợ đầy đủ dấu tiếng Việt, tải qua CDN nên không lỗi font trên mọi máy/trình duyệt.

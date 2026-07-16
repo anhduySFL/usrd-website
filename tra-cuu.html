@@ -39,27 +39,26 @@
 <div id="usrd-footer"></div>
 
 <script src="js/partials.js"></script>
+<script src="js/data.js"></script>
 <script>
-  // Dữ liệu mẫu — sau này thay bằng dữ liệu thật (Google Sheet / CMS)
-  const documents = [
-    { type: "Bài giảng", title: "Giải tích 1 – Toán cao cấp", desc: "Tài liệu tóm tắt lý thuyết và bài tập có lời giải chi tiết.", author: "Nguyễn Văn A · ĐH Bách Khoa", date: "12/05/2024" },
-    { type: "Sách tham khảo", title: "Kinh tế vĩ mô – Pindyck", desc: "Tóm tắt nội dung chính và các ví dụ minh họa dễ hiểu.", author: "Trần Thị B · UEH", date: "10/05/2024" },
-    { type: "Báo cáo", title: "Báo cáo QoS mạng 5G", desc: "Phân tích chất lượng dịch vụ và đánh giá hiệu năng mạng 5G.", author: "Lê Minh C · ĐH Công nghệ", date: "08/05/2024" },
-    { type: "Bài nghiên cứu", title: "Deep learning for medical image analysis", desc: "A survey on recent advances and applications.", author: "John Doe · MIT", date: "07/05/2024" },
-    { type: "Luận văn", title: "Ứng dụng AI trong y học hiện đại", desc: "Luận văn thạc sĩ về các ứng dụng thực tiễn của trí tuệ nhân tạo trong ngành y học.", author: "Phạm Văn B · ĐH Quốc gia", date: "10/07/2026" },
-    { type: "Báo cáo", title: "Blockchain và ứng dụng trong quản lý chuỗi cung ứng", desc: "Bài trình bày tại hội thảo quốc tế về công nghệ blockchain.", author: "Trần C và Đội · Tech Conference", date: "05/07/2026" }
-  ];
-
   const resultList = document.getElementById("resultList");
   const emptyState = document.getElementById("emptyState");
   const searchInput = document.getElementById("searchInput");
   const typeFilter = document.getElementById("typeFilter");
 
+  let allDocuments = [];
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
   function render() {
     const q = searchInput.value.trim().toLowerCase();
     const type = typeFilter.value;
 
-    const filtered = documents.filter(doc => {
+    const filtered = allDocuments.filter(doc => {
       const matchesQuery = !q ||
         doc.title.toLowerCase().includes(q) ||
         doc.desc.toLowerCase().includes(q) ||
@@ -71,25 +70,42 @@
     resultList.innerHTML = filtered.map(doc => `
       <div class="doc-list-item">
         <div>
-          <div class="doc-meta"><span class="doc-type">${doc.type}</span><span class="doc-date">${doc.date}</span></div>
-          <h4 class="doc-title">${doc.title}</h4>
-          <p class="doc-desc">${doc.desc}</p>
-          <p class="doc-author">${doc.author}</p>
+          <div class="doc-meta"><span class="doc-type">${escapeHtml(doc.type || "Tài liệu")}</span></div>
+          <h4 class="doc-title">${escapeHtml(doc.title)}</h4>
+          <p class="doc-desc">${escapeHtml(doc.desc)}</p>
+          <p class="doc-author">${escapeHtml(doc.author || "Chưa rõ tác giả")}</p>
         </div>
-        <button class="save-btn">Lưu</button>
+        <a class="save-btn" href="${escapeHtml(doc.fileLink)}" target="_blank" rel="noopener">Xem tài liệu</a>
       </div>
     `).join("");
 
     emptyState.style.display = filtered.length === 0 ? "block" : "none";
+    emptyState.textContent = allDocuments.length === 0
+      ? "Chưa tải được dữ liệu tài liệu. Kiểm tra lại kết nối Google Sheet."
+      : "Không tìm thấy tài liệu phù hợp. Thử từ khóa khác.";
   }
 
-  // Đọc từ khóa từ URL nếu đến từ ô search ở trang chủ
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get("q")) searchInput.value = urlParams.get("q");
+  // Tự sinh danh sách loại tài liệu từ dữ liệu thật (không hardcode)
+  function populateTypeFilter() {
+    const types = [...new Set(allDocuments.map(d => d.type).filter(Boolean))];
+    typeFilter.innerHTML = '<option value="">Tất cả loại tài liệu</option>' +
+      types.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join("");
+  }
+
+  async function init() {
+    resultList.innerHTML = '<p class="empty-state">Đang tải dữ liệu...</p>';
+    allDocuments = await usrdLoadDocuments();
+    populateTypeFilter();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("q")) searchInput.value = urlParams.get("q");
+
+    render();
+  }
 
   searchInput.addEventListener("input", render);
   typeFilter.addEventListener("change", render);
-  render();
+  init();
 </script>
 </body>
 </html>
