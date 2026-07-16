@@ -79,11 +79,19 @@ async function usrdLoadDocuments() {
   }
 }
 
-// Sinh HTML cho nút hành động: "Đọc bài viết" (trang nội bộ) hoặc "Tải tài liệu" (file ngoài)
+// Sinh HTML cho nút hành động
+// - Chỉ có nội dung web → "Đọc bài viết →"
+// - Chỉ có link file → "Tải tài liệu ↗"
+// - Có cả hai → hiện cả 2 nút
 function usrdActionButton(doc) {
   const isArticle = doc.format === "Bài viết" && doc.content.trim() !== "";
-  if (isArticle) {
-    return `<a class="save-btn" href="bai-viet.html?slug=${encodeURIComponent(doc.slug)}">Đọc bài viết →</a>`;
-  }
-  return `<a class="save-btn" href="${doc.fileLink}" target="_blank" rel="noopener">Tải tài liệu ↗</a>`;
+  const hasFile = doc.fileLink && doc.fileLink !== "#" && doc.fileLink.startsWith("http");
+
+  const btnArticle = `<a class="save-btn" href="bai-viet.html?slug=${encodeURIComponent(doc.slug)}">Đọc bài viết →</a>`;
+  const btnFile = `<a class="save-btn" href="${doc.fileLink}" target="_blank" rel="noopener" style="margin-left:8px;">Tải tài liệu ↗</a>`;
+
+  if (isArticle && hasFile) return btnArticle + btnFile;
+  if (isArticle) return btnArticle;
+  if (hasFile) return btnFile;
+  return "";
 }
