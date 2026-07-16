@@ -1,151 +1,77 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>uSRD — Kho tàng học liệu sinh viên</title>
-<meta name="description" content="University Science Research Documentary. Tài liệu học tập, bài giảng và nghiên cứu khoa học dành cho sinh viên.">
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+# uSRD — Kho tàng học liệu sinh viên
 
-<div id="usrd-header" data-active="index.html"></div>
+Website tĩnh (HTML/CSS/JS thuần) — không cần cài đặt gì để chạy, không tốn phí hosting.
 
-<section class="hero">
-  <div class="wrap">
-    <p class="hero-eyebrow">UNIVERSITY SCIENTIFIC RESEARCH DEPOSITORY</p>
-    <h1>uSRD — Kho tàng học liệu sinh viên</h1>
-    <p>Tài liệu học thuật, bài giảng và nghiên cứu khoa học được tuyển chọn dành cho sinh viên và người nghiên cứu.</p>
-    <form class="search-row" action="tra-cuu.html" method="get">
-      <input type="text" name="q" placeholder="Tìm kiếm tài liệu, chủ đề, tác giả, trường đại học...">
-      <button type="submit">Tìm kiếm</button>
-    </form>
-    <div class="tags-row">
-      <span class="label">Phổ biến:</span>
-      <span class="tag-pill">Trí tuệ nhân tạo</span>
-      <span class="tag-pill">Kinh tế</span>
-      <span class="tag-pill">Y học</span>
-      <span class="tag-pill">Dữ liệu</span>
-    </div>
-  </div>
-</section>
+## 📁 Cấu trúc project
+```
+usrd-website/
+├── index.html         → Trang chủ
+├── tra-cuu.html        → Trang tra cứu (có ô tìm kiếm hoạt động)
+├── danh-muc.html        → Trang danh mục
+├── de-xuat.html         → Trang đề xuất
+├── doc-sau.html          → Trang đọc sau
+├── css/style.css        → Toàn bộ giao diện
+└── js/partials.js       → Header + Footer dùng chung
+```
 
-<section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Đề xuất dành cho bạn</h2>
-      <a href="de-xuat.html">Xem thêm →</a>
-    </div>
-    <div class="doc-grid" id="recommendGrid">
-      <p class="empty-state">Đang tải dữ liệu...</p>
-    </div>
-  </div>
-</section>
+## 🚀 Cách đưa lên mạng (không cần biết code)
 
-<section class="section alt">
-  <div class="wrap">
-    <div class="section-head"><h2>Chân dung học tập của bạn</h2></div>
-    <div class="profile-grid">
-      <div>
-        <p class="label-sm">Bạn là người học</p>
-        <h3>Thiên về nghiên cứu</h3>
-        <p>Bạn thích tìm hiểu sâu, phân tích vấn đề kỹ lưỡng trước khi đưa ra kết luận.</p>
-        <a href="#">Xem chi tiết →</a>
-      </div>
-      <div>
-        <p class="stat-block-title">Thống kê hành vi đọc</p>
-        <ul class="stat-list">
-          <li>Chủ đề yêu thích: <b>CNTT, Trí tuệ nhân tạo</b></li>
-          <li>Loại tài liệu: <b>Bài giảng, Sách, Báo cáo</b></li>
-          <li>Tần suất: <b>2.5 giờ/ngày</b></li>
-          <li>Thời gian tuần này: <b>17 giờ 30 phút</b></li>
-        </ul>
-      </div>
-      <div class="donut-wrap">
-        <svg viewBox="0 0 120 120" width="100" height="100" role="img" aria-label="Biểu đồ tỷ lệ chủ đề yêu thích">
-          <circle cx="60" cy="60" r="46" fill="none" stroke="#e3e3e0" stroke-width="16"/>
-          <circle cx="60" cy="60" r="46" fill="none" stroke="#185fa5" stroke-width="16" stroke-dasharray="115.6 173.4" transform="rotate(-90 60 60)"/>
-          <circle cx="60" cy="60" r="46" fill="none" stroke="#639922" stroke-width="16" stroke-dasharray="72.3 216.7" stroke-dashoffset="-115.6" transform="rotate(-90 60 60)"/>
-          <circle cx="60" cy="60" r="46" fill="none" stroke="#D85A30" stroke-width="16" stroke-dasharray="43.4 245.6" stroke-dashoffset="-187.9" transform="rotate(-90 60 60)"/>
-        </svg>
-        <div class="donut-legend">
-          <div>■ CNTT 40%</div>
-          <div>■ Kinh tế 25%</div>
-          <div>■ Khác 20%</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+### Bước 1 — Tạo tài khoản
+1. Vào **https://github.com** → bấm "Sign up" → tạo tài khoản free
+2. Vào **https://vercel.com** → bấm "Sign up" → chọn "Continue with GitHub" (dùng luôn tài khoản GitHub vừa tạo)
 
-<section class="section" style="border-bottom:none;">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Tin tức và xu hướng mới</h2>
-      <a href="#">Xem thêm →</a>
-    </div>
-    <div class="doc-grid">
-      <div class="doc-card">
-        <span class="doc-type">Tin tức</span>
-        <p class="doc-date" style="margin:8px 0 6px;">15/05/2024</p>
-        <h4 class="doc-title">Các trường ĐH công bố lịch thi học kỳ 2 năm 2024</h4>
-        <p class="doc-desc">Cập nhật lịch thi của các trường đại học trên toàn quốc.</p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-type">Xu hướng</span>
-        <p class="doc-date" style="margin:8px 0 6px;">14/05/2024</p>
-        <h4 class="doc-title">Top 10 kỹ năng sinh viên cần có trong thời đại AI</h4>
-        <p class="doc-desc">Những kỹ năng quan trọng giúp bạn nổi bật trong tương lai.</p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-type">Học thuật</span>
-        <p class="doc-date" style="margin:8px 0 6px;">13/05/2024</p>
-        <h4 class="doc-title">Phương pháp học tập hiệu quả dành cho sinh viên</h4>
-        <p class="doc-desc">Bí quyết quản lý thời gian và tối ưu hóa việc học.</p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-type">Cập nhật</span>
-        <p class="doc-date" style="margin:8px 0 6px;">12/05/2024</p>
-        <h4 class="doc-title">uSRD ra mắt tính năng đọc cùng bạn bè</h4>
-        <p class="doc-desc">Cùng nhau học tập và chia sẻ tài liệu dễ dàng hơn.</p>
-      </div>
-    </div>
-  </div>
-</section>
+### Bước 2 — Tải project lên GitHub
+1. Đăng nhập GitHub → bấm nút xanh **"New"** (hoặc dấu +) → **"New repository"**
+2. Đặt tên: `usrd-website` → bấm **"Create repository"**
+3. Trên trang repository vừa tạo, bấm **"uploading an existing file"**
+4. Kéo-thả **toàn bộ** các file/folder trong thư mục `usrd-website` (index.html, css/, js/, các trang .html) vào khung upload
+5. Bấm **"Commit changes"** ở dưới cùng
 
-<div id="usrd-footer"></div>
+### Bước 3 — Deploy lên Vercel (2 phút, tự động)
+1. Đăng nhập **vercel.com** → bấm **"Add New..."** → **"Project"**
+2. Chọn repository `usrd-website` vừa tạo → bấm **"Import"**
+3. Không cần chỉnh gì cả (vì là site tĩnh) → bấm **"Deploy"**
+4. Sau ~30 giây, Vercel đưa cho bạn 1 link dạng `usrd-website.vercel.app` — đó là website sống, ai cũng truy cập được
 
-<script src="js/partials.js"></script>
-<script src="js/data.js"></script>
-<script>
-  function escapeHtml(str) {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
-  }
+### Bước 4 — Mỗi lần muốn cập nhật (sửa nội dung, thêm tài liệu)
+1. Vào lại repository trên GitHub → vào đúng file cần sửa (vd `index.html`)
+2. Bấm biểu tượng cây bút (Edit) → sửa nội dung → bấm **"Commit changes"**
+3. **Xong!** Vercel tự động phát hiện thay đổi và cập nhật website trong ~30 giây, không cần làm gì thêm
 
-  async function renderRecommended() {
-    const grid = document.getElementById("recommendGrid");
-    const docs = await usrdLoadDocuments();
+## 📝 Cách đăng tài liệu mới hàng ngày (KHÔNG cần sửa code)
 
-    if (docs.length === 0) {
-      grid.innerHTML = '<p class="empty-state">Chưa có tài liệu nào. Thêm dữ liệu vào Google Sheet để hiển thị ở đây.</p>';
-      return;
-    }
+Website đã được nối với 1 **Google Sheet** — đây là nơi duy nhất bạn cần vào để thêm tài liệu.
 
-    const top4 = docs.slice(0, 4);
-    grid.innerHTML = top4.map(doc => `
-      <div class="doc-card">
-        <div class="doc-meta"><span class="doc-type">${escapeHtml(doc.type || "Tài liệu")}</span></div>
-        <h4 class="doc-title">${escapeHtml(doc.title)}</h4>
-        <p class="doc-desc">${escapeHtml(doc.desc)}</p>
-        <p class="doc-author">${escapeHtml(doc.author || "Chưa rõ tác giả")}</p>
-        <div style="margin-top:10px;">${usrdActionButton(doc)}</div>
-      </div>
-    `).join("");
-  }
+### Cấu trúc Sheet (đúng 8 cột, đừng đổi tên cột)
+```
+Tên | Loại | Tác giả | Mô tả | Link file | Trạng thái | Định dạng | Nội dung
+```
 
-  renderRecommended();
-</script>
-</body>
-</html>
+### Hai loại nội dung — bạn chọn qua cột "Định dạng"
+
+**1. `Bài viết`** → Hiện trực tiếp trên web (giống 1 bài blog), không cần rời khỏi trang.
+- Điền đầy đủ nội dung vào cột **"Nội dung"**
+- Xuống dòng giữa các đoạn văn: trong Google Sheets bấm **Alt + Enter** (Windows) hoặc **Option + Enter** (Mac) để xuống dòng trong cùng 1 ô — mỗi lần xuống dòng sẽ tự thành 1 đoạn văn riêng trên web
+- Cột "Link file" có thể để trống
+
+**2. `Tệp đính kèm`** (hoặc để trống cột Định dạng) → Nút bấm sẽ mở file PDF/Word ở tab mới.
+- Dùng cho tiểu luận, niên luận, luận văn, báo cáo dài — những tài liệu cần giữ nguyên định dạng trình bày
+- Bắt buộc điền cột **"Link file"** (link Google Drive, để chế độ "Bất kỳ ai có link đều xem được")
+- Cột "Nội dung" để trống
+
+### Quy trình đăng bài
+1. Mở Google Sheet đang dùng (link Sheet đang publish ở biến `USRD_SHEET_CSV_URL` trong file `js/data.js`)
+2. Thêm 1 hàng mới ở cuối, điền Tên, Loại, Tác giả, Mô tả
+3. Chọn Định dạng phù hợp (Bài viết hoặc Tệp đính kèm), điền Nội dung hoặc Link file tương ứng
+4. **Xong!** Không cần "Publish" lại — Sheet đã publish 1 lần là link luôn tự động cập nhật theo dữ liệu mới nhất
+5. Refresh lại website sẽ thấy tài liệu mới ngay lập tức. Với "Bài viết", nút sẽ ghi "Đọc bài viết →" và mở trang đọc ngay trên web; với "Tệp đính kèm", nút ghi "Tải tài liệu ↗" và mở file ở tab mới
+
+### Nếu muốn đổi sang Sheet khác
+Mở file `js/data.js` → sửa dòng đầu tiên `USRD_SHEET_CSV_URL` → thay bằng link CSV mới → Commit trên GitHub.
+
+### Lưu ý về link file
+- Tài liệu (PDF/Word) nên để trên **Google Drive**, sau đó lấy link **"Bất kỳ ai có link đều xem được"** rồi dán vào cột "Link file"
+- Không upload trực tiếp file vào GitHub (không tối ưu cho file lớn)
+
+## 🔤 Font chữ
+Dùng **Be Vietnam Pro** (phần thân) và **Source Serif 4** (tiêu đề) từ Google Fonts — cả hai đều hỗ trợ đầy đủ dấu tiếng Việt, tải qua CDN nên không lỗi font trên mọi máy/trình duyệt.

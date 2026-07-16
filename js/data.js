@@ -3,46 +3,65 @@
 // ============================================================
 const USRD_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS5NRCDx09z-zz3JFcjlxGURDzkD3paOuDIVNQbiNa0cbnhdiEUblQnSqjf8PfuVDgXFhnR9HQNqK5_/pub?gid=1778908273&single=true&output=csv";
 
-// Parse 1 dòng CSV, có xử lý trường hợp mô tả chứa dấu phẩy trong ngoặc kép ("...")
-function parseCsvLine(line) {
-  const result = [];
-  let cur = "";
+// Parser CSV đầy đủ, xử lý được cả nội dung nhiều dòng bên trong 1 ô (ví dụ ô "Nội dung" của bài viết dài)
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let field = "";
   let inQuotes = false;
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    if (char === '"') {
-      if (inQuotes && line[i + 1] === '"') { cur += '"'; i++; }
-      else { inQuotes = !inQuotes; }
-    } else if (char === "," && !inQuotes) {
-      result.push(cur); cur = "";
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else { inQuotes = false; }
+      } else {
+        field += c;
+      }
     } else {
-      cur += char;
+      if (c === '"') { inQuotes = true; }
+      else if (c === ",") { row.push(field); field = ""; }
+      else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+      else if (c === "\r") { /* bỏ qua */ }
+      else { field += c; }
     }
   }
-  result.push(cur);
-  return result;
-}
+  if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
 
-function parseCsv(text) {
-  const lines = text.replace(/\r/g, "").split("\n").filter(l => l.trim() !== "");
-  const headers = parseCsvLine(lines[0]).map(h => h.trim());
-  return lines.slice(1).map(line => {
-    const values = parseCsvLine(line);
-    const row = {};
-    headers.forEach((h, i) => { row[h] = (values[i] || "").trim(); });
-    return row;
+  const nonEmptyRows = rows.filter(r => r.some(v => v.trim() !== ""));
+  if (nonEmptyRows.length === 0) return [];
+
+  const headers = nonEmptyRows[0].map(h => h.trim());
+  return nonEmptyRows.slice(1).map(values => {
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = (values[i] || "").trim(); });
+    return obj;
   });
 }
 
+// Tạo slug từ tiêu đề (dùng làm URL cho trang đọc bài viết)
+function usrdSlugify(str) {
+  return str.toString().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d").replace(/Đ/g, "D")
+    .trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
+}
+
 // Chuẩn hóa tên cột tiếng Việt trong Sheet -> tên field dùng trong code
-function normalizeDoc(row) {
+function normalizeDoc(row, index) {
+  const title = row["Tên"] || "";
+  const format = (row["Định dạng"] || "").trim();
   return {
-    title: row["Tên"] || "",
+    title: title,
     type: row["Loại"] || "",
     author: row["Tác giả"] || "",
     desc: row["Mô tả"] || "",
     fileLink: row["Link file"] || "#",
-    status: row["Trạng thái"] || ""
+    status: row["Trạng thái"] || "",
+    format: format || "Tệp đính kèm", // mặc định là tệp đính kèm nếu bỏ trống
+    content: row["Nội dung"] || "",
+    slug: usrdSlugify(title) || `bai-viet-${index}`
   };
 }
 
@@ -58,4 +77,13 @@ async function usrdLoadDocuments() {
     console.error("uSRD: lỗi tải dữ liệu tài liệu", err);
     return [];
   }
+}
+
+// Sinh HTML cho nút hành động: "Đọc bài viết" (trang nội bộ) hoặc "Tải tài liệu" (file ngoài)
+function usrdActionButton(doc) {
+  const isArticle = doc.format === "Bài viết" && doc.content.trim() !== "";
+  if (isArticle) {
+    return `<a class="save-btn" href="bai-viet.html?slug=${encodeURIComponent(doc.slug)}">Đọc bài viết →</a>`;
+  }
+  return `<a class="save-btn" href="${doc.fileLink}" target="_blank" rel="noopener">Tải tài liệu ↗</a>`;
 }
