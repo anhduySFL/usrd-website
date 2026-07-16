@@ -3,60 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Danh mục tài liệu — uSRD</title>
+<title>Bài viết — uSRD</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+  .article-wrap { max-width: 760px; margin: 0 auto; padding: 3rem 2rem; }
+  .article-eyebrow { font-size: 12px; color: var(--text-accent); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 12px; }
+  .article-title { font-family: var(--font-voice); font-weight: 500; font-size: 30px; line-height: 1.3; color: var(--text-primary); margin-bottom: 1rem; }
+  .article-meta { font-size: 13px; color: var(--text-muted); border-bottom: 1px solid var(--border-stronger); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .article-meta b { color: var(--text-primary); font-weight: 500; }
+  .article-body { font-size: 16px; line-height: 1.85; color: var(--text-primary); }
+  .article-body p { margin-bottom: 1.25rem; }
+  .back-link { display: inline-block; margin-bottom: 1.5rem; font-size: 13px; color: var(--text-accent); text-decoration: none; }
+</style>
 </head>
 <body>
 
-<div id="usrd-header" data-active="danh-muc.html"></div>
+<div id="usrd-header" data-active="tra-cuu.html"></div>
 
-<section class="page-header">
-  <div class="wrap">
-    <h1>Danh mục</h1>
-    <p>Duyệt tài liệu theo từng lĩnh vực và chuyên ngành.</p>
-  </div>
-</section>
-
-<section class="section" style="border-bottom:none;">
-  <div class="wrap">
-    <div class="doc-grid" style="grid-template-columns: repeat(4,1fr); row-gap:2rem;">
-      <a href="tra-cuu.html" class="doc-card" style="text-decoration:none; border-right:1px solid var(--border);">
-        <h4 class="doc-title">Công nghệ thông tin</h4>
-        <p class="doc-desc">128 tài liệu</p>
-      </a>
-      <a href="tra-cuu.html" class="doc-card" style="text-decoration:none; border-right:1px solid var(--border);">
-        <h4 class="doc-title">Kinh tế</h4>
-        <p class="doc-desc">96 tài liệu</p>
-      </a>
-      <a href="tra-cuu.html" class="doc-card" style="text-decoration:none; border-right:1px solid var(--border);">
-        <h4 class="doc-title">Y học</h4>
-        <p class="doc-desc">74 tài liệu</p>
-      </a>
-      <a href="tra-cuu.html" class="doc-card" style="text-decoration:none;">
-        <h4 class="doc-title">Kỹ thuật</h4>
-        <p class="doc-desc">61 tài liệu</p>
-      </a>
-      <a href="tra-cuu.html" class="doc-card" style="text-decoration:none; border-right:1px solid var(--border);">
-        <h4 class="doc-title">Toán học</h4>
-        <p class="doc-desc">53 tài liệu</p>
-      </a>
-      <a href="tra-cuu.html" class="doc-card" style="text-decoration:none; border-right:1px solid var(--border);">
-        <h4 class="doc-title">Vật lý</h4>
-        <p class="doc-desc">40 tài liệu</p>
-      </a>
-      <a href="tra-cuu.html" class="doc-card" style="text-decoration:none; border-right:1px solid var(--border);">
-        <h4 class="doc-title">Sinh học</h4>
-        <p class="doc-desc">37 tài liệu</p>
-      </a>
-      <a href="tra-cuu.html" class="doc-card" style="text-decoration:none;">
-        <h4 class="doc-title">Giáo dục</h4>
-        <p class="doc-desc">29 tài liệu</p>
-      </a>
-    </div>
-  </div>
-</section>
+<div class="article-wrap" id="articleContainer">
+  <p style="color: var(--text-secondary); font-size: 14px;">Đang tải bài viết...</p>
+</div>
 
 <div id="usrd-footer"></div>
+
 <script src="js/partials.js"></script>
+<script src="js/data.js"></script>
+<script>
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  async function renderArticle() {
+    const container = document.getElementById("articleContainer");
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get("slug");
+
+    if (!slug) {
+      container.innerHTML = `<p>Không tìm thấy bài viết. <a href="tra-cuu.html" class="back-link" style="margin:0;">← Về trang Tra cứu</a></p>`;
+      return;
+    }
+
+    const docs = await usrdLoadDocuments();
+    const doc = docs.find(d => d.slug === slug);
+
+    if (!doc) {
+      container.innerHTML = `<p>Bài viết không tồn tại hoặc đã bị gỡ. <a href="tra-cuu.html" class="back-link" style="margin:0;">← Về trang Tra cứu</a></p>`;
+      return;
+    }
+
+    if (doc.format !== "Bài viết" || !doc.content.trim()) {
+      // Không phải bài viết web -> chuyển hướng sang tải file
+      container.innerHTML = `
+        <a href="tra-cuu.html" class="back-link">← Về trang Tra cứu</a>
+        <h1 class="article-title">${escapeHtml(doc.title)}</h1>
+        <p>Tài liệu này ở dạng tệp đính kèm, không hiển thị trực tiếp trên web.</p>
+        <a class="save-btn" href="${escapeHtml(doc.fileLink)}" target="_blank" rel="noopener">Tải tài liệu ↗</a>
+      `;
+      return;
+    }
+
+    const paragraphs = doc.content.split("\n").filter(p => p.trim() !== "")
+      .map(p => `<p>${escapeHtml(p)}</p>`).join("");
+
+    container.innerHTML = `
+      <a href="tra-cuu.html" class="back-link">← Về trang Tra cứu</a>
+      <p class="article-eyebrow">${escapeHtml(doc.type || "Bài viết")}</p>
+      <h1 class="article-title">${escapeHtml(doc.title)}</h1>
+      <p class="article-meta"><b>${escapeHtml(doc.author || "uSRD")}</b> · ${escapeHtml(doc.desc)}</p>
+      <div class="article-body">${paragraphs}</div>
+    `;
+
+    document.title = doc.title + " — uSRD";
+  }
+
+  renderArticle();
+</script>
 </body>
 </html>
