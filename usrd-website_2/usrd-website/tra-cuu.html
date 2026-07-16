@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tra cứu tài liệu — uSRD</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="usrd-header" data-active="tra-cuu.html"></div>
+
+<section class="page-header">
+  <div class="wrap">
+    <h1>Tra cứu tài liệu</h1>
+    <p>Tìm kiếm trong toàn bộ kho tài liệu của uSRD theo tên, tác giả, loại hoặc chủ đề.</p>
+  </div>
+</section>
+
+<section class="section" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="filter-row">
+      <input type="text" id="searchInput" placeholder="Nhập từ khóa tìm kiếm..." style="flex:1; min-width:220px;">
+      <select id="typeFilter">
+        <option value="">Tất cả loại tài liệu</option>
+        <option value="Bài giảng">Bài giảng</option>
+        <option value="Sách tham khảo">Sách tham khảo</option>
+        <option value="Báo cáo">Báo cáo</option>
+        <option value="Bài nghiên cứu">Bài nghiên cứu</option>
+        <option value="Luận văn">Luận văn</option>
+      </select>
+    </div>
+
+    <div class="doc-list" id="resultList"></div>
+    <p class="empty-state" id="emptyState" style="display:none;">Không tìm thấy tài liệu phù hợp. Thử từ khóa khác.</p>
+  </div>
+</section>
+
+<div id="usrd-footer"></div>
+
+<script src="js/partials.js"></script>
+<script src="js/data.js"></script>
+<script>
+  const resultList = document.getElementById("resultList");
+  const emptyState = document.getElementById("emptyState");
+  const searchInput = document.getElementById("searchInput");
+  const typeFilter = document.getElementById("typeFilter");
+
+  let allDocuments = [];
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function render() {
+    const q = searchInput.value.trim().toLowerCase();
+    const type = typeFilter.value;
+
+    const filtered = allDocuments.filter(doc => {
+      const matchesQuery = !q ||
+        doc.title.toLowerCase().includes(q) ||
+        doc.desc.toLowerCase().includes(q) ||
+        doc.author.toLowerCase().includes(q);
+      const matchesType = !type || doc.type === type;
+      return matchesQuery && matchesType;
+    });
+
+    resultList.innerHTML = filtered.map(doc => `
+      <div class="doc-list-item">
+        <div>
+          <div class="doc-meta"><span class="doc-type">${escapeHtml(doc.type || "Tài liệu")}</span></div>
+          <h4 class="doc-title">${escapeHtml(doc.title)}</h4>
+          <p class="doc-desc">${escapeHtml(doc.desc)}</p>
+          <p class="doc-author">${escapeHtml(doc.author || "Chưa rõ tác giả")}</p>
+        </div>
+        ${usrdActionButton(doc)}
+      </div>
+    `).join("");
+
+    emptyState.style.display = filtered.length === 0 ? "block" : "none";
+    emptyState.textContent = allDocuments.length === 0
+      ? "Chưa tải được dữ liệu tài liệu. Kiểm tra lại kết nối Google Sheet."
+      : "Không tìm thấy tài liệu phù hợp. Thử từ khóa khác.";
+  }
+
+  // Tự sinh danh sách loại tài liệu từ dữ liệu thật (không hardcode)
+  function populateTypeFilter() {
+    const types = [...new Set(allDocuments.map(d => d.type).filter(Boolean))];
+    typeFilter.innerHTML = '<option value="">Tất cả loại tài liệu</option>' +
+      types.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join("");
+  }
+
+  async function init() {
+    resultList.innerHTML = '<p class="empty-state">Đang tải dữ liệu...</p>';
+    allDocuments = await usrdLoadDocuments();
+    populateTypeFilter();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("q")) searchInput.value = urlParams.get("q");
+
+    render();
+  }
+
+  searchInput.addEventListener("input", render);
+  typeFilter.addEventListener("change", render);
+  init();
+</script>
+</body>
+</html>
