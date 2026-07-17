@@ -1,151 +1,276 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>uSRD — Kho tàng học liệu sinh viên</title>
-<meta name="description" content="University Science Research Documentary. Tài liệu học tập, bài giảng và nghiên cứu khoa học dành cho sinh viên.">
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500&display=swap');
 
-<div id="usrd-header" data-active="index.html"></div>
+:root {
+  --text-primary: #16161a;
+  --text-secondary: #55555c;
+  --text-muted: #8a8a90;
+  --text-accent: #185fa5;
+  --fill-accent: #185fa5;
+  --on-accent: #ffffff;
+  --on-primary: #ffffff;
+  --surface-0: #ffffff;
+  --surface-1: #f5f5f3;
+  --surface-2: #ffffff;
+  --border: #e3e3e0;
+  --border-strong: #c9c9c5;
+  --border-stronger: #16161a;
+  --neutral-300: #cccccc;
+  --neutral-400: #999999;
+  --neutral-500: #777777;
+  --neutral-600: #555555;
+  --font-sans: 'Be Vietnam Pro', -apple-system, sans-serif;
+  --font-voice: 'Source Serif 4', Georgia, serif;
+}
 
-<section class="hero">
-  <div class="wrap">
-    <p class="hero-eyebrow">UNIVERSITY SCIENTIFIC RESEARCH DEPOSITORY</p>
-    <h1>uSRD — Kho tàng học liệu sinh viên</h1>
-    <p>Tài liệu học thuật, bài giảng và nghiên cứu khoa học được tuyển chọn dành cho sinh viên và người nghiên cứu.</p>
-    <form class="search-row" action="tra-cuu.html" method="get">
-      <input type="text" name="q" placeholder="Tìm kiếm tài liệu, chủ đề, tác giả, trường đại học...">
-      <button type="submit">Tìm kiếm</button>
-    </form>
-    <div class="tags-row">
-      <span class="label">Phổ biến:</span>
-      <span class="tag-pill">Trí tuệ nhân tạo</span>
-      <span class="tag-pill">Kinh tế</span>
-      <span class="tag-pill">Y học</span>
-      <span class="tag-pill">Dữ liệu</span>
-    </div>
-  </div>
-</section>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-<section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Đề xuất dành cho bạn</h2>
-      <a href="de-xuat.html">Xem thêm →</a>
-    </div>
-    <div class="doc-grid" id="recommendGrid">
-      <p class="empty-state">Đang tải dữ liệu...</p>
-    </div>
-  </div>
-</section>
+body {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: var(--surface-0);
+  line-height: 1.5;
+}
 
-<section class="section alt">
-  <div class="wrap">
-    <div class="section-head"><h2>Chân dung học tập của bạn</h2></div>
-    <div class="profile-grid">
-      <div>
-        <p class="label-sm">Bạn là người học</p>
-        <h3>Thiên về nghiên cứu</h3>
-        <p>Bạn thích tìm hiểu sâu, phân tích vấn đề kỹ lưỡng trước khi đưa ra kết luận.</p>
-        <a href="#">Xem chi tiết →</a>
-      </div>
-      <div>
-        <p class="stat-block-title">Thống kê hành vi đọc</p>
-        <ul class="stat-list">
-          <li>Chủ đề yêu thích: <b>CNTT, Trí tuệ nhân tạo</b></li>
-          <li>Loại tài liệu: <b>Bài giảng, Sách, Báo cáo</b></li>
-          <li>Tần suất: <b>2.5 giờ/ngày</b></li>
-          <li>Thời gian tuần này: <b>17 giờ 30 phút</b></li>
-        </ul>
-      </div>
-      <div class="donut-wrap">
-        <svg viewBox="0 0 120 120" width="100" height="100" role="img" aria-label="Biểu đồ tỷ lệ chủ đề yêu thích">
-          <circle cx="60" cy="60" r="46" fill="none" stroke="#e3e3e0" stroke-width="16"/>
-          <circle cx="60" cy="60" r="46" fill="none" stroke="#185fa5" stroke-width="16" stroke-dasharray="115.6 173.4" transform="rotate(-90 60 60)"/>
-          <circle cx="60" cy="60" r="46" fill="none" stroke="#639922" stroke-width="16" stroke-dasharray="72.3 216.7" stroke-dashoffset="-115.6" transform="rotate(-90 60 60)"/>
-          <circle cx="60" cy="60" r="46" fill="none" stroke="#D85A30" stroke-width="16" stroke-dasharray="43.4 245.6" stroke-dashoffset="-187.9" transform="rotate(-90 60 60)"/>
-        </svg>
-        <div class="donut-legend">
-          <div>■ CNTT 40%</div>
-          <div>■ Kinh tế 25%</div>
-          <div>■ Khác 20%</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+a { color: inherit; }
 
-<section class="section" style="border-bottom:none;">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Tin tức và xu hướng mới</h2>
-      <a href="#">Xem thêm →</a>
-    </div>
-    <div class="doc-grid">
-      <div class="doc-card">
-        <span class="doc-type">Tin tức</span>
-        <p class="doc-date" style="margin:8px 0 6px;">15/05/2024</p>
-        <h4 class="doc-title">Các trường ĐH công bố lịch thi học kỳ 2 năm 2024</h4>
-        <p class="doc-desc">Cập nhật lịch thi của các trường đại học trên toàn quốc.</p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-type">Xu hướng</span>
-        <p class="doc-date" style="margin:8px 0 6px;">14/05/2024</p>
-        <h4 class="doc-title">Top 10 kỹ năng sinh viên cần có trong thời đại AI</h4>
-        <p class="doc-desc">Những kỹ năng quan trọng giúp bạn nổi bật trong tương lai.</p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-type">Học thuật</span>
-        <p class="doc-date" style="margin:8px 0 6px;">13/05/2024</p>
-        <h4 class="doc-title">Phương pháp học tập hiệu quả dành cho sinh viên</h4>
-        <p class="doc-desc">Bí quyết quản lý thời gian và tối ưu hóa việc học.</p>
-      </div>
-      <div class="doc-card">
-        <span class="doc-type">Cập nhật</span>
-        <p class="doc-date" style="margin:8px 0 6px;">12/05/2024</p>
-        <h4 class="doc-title">uSRD ra mắt tính năng đọc cùng bạn bè</h4>
-        <p class="doc-desc">Cùng nhau học tập và chia sẻ tài liệu dễ dàng hơn.</p>
-      </div>
-    </div>
-  </div>
-</section>
+/* ============================================================
+   🔴 FIX ĐỎ + 🟢 FIX XANH LÁ: Tăng max-width, bỏ giới hạn co rúm
+   - .wrap tăng từ 1140px → 1400px
+   - padding ngang tăng lên 3rem cho thoáng
+   ============================================================ */
+.wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
 
-<div id="usrd-footer"></div>
+/* ============================================================
+   🟢 FIX XANH LÁ: Header chạy full 100% width
+   - site-header không bị .wrap cắt hai bên
+   - dùng padding ngang trực tiếp trên header thay vì dùng .wrap
+   ============================================================ */
+.site-header {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--text-primary);
+  padding: 0.9rem 3rem; /* padding trực tiếp, không qua .wrap */
+  width: 100%;
+}
+/* Nội dung bên trong header vẫn có max-width để không quá rộng trên 4K */
+.site-header .wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0; /* đã có padding từ site-header */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 
-<script src="js/partials.js"></script>
-<script src="js/data.js"></script>
-<script>
-  function escapeHtml(str) {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
-  }
+.brand { display: flex; align-items: baseline; gap: 10px; text-decoration: none; }
+.brand-name { font-size: 22px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.3px; }
+.brand-desc { font-size: 12px; color: var(--text-muted); }
+nav.main-nav { display: flex; gap: 2rem; flex-wrap: wrap; }
+nav.main-nav a { text-decoration: none; color: var(--text-secondary); font-size: 13px; padding-bottom: 4px; border-bottom: 2px solid transparent; }
+nav.main-nav a.active,
+nav.main-nav a:hover { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+.header-actions { display: flex; gap: 1.25rem; align-items: center; font-size: 13px; }
+.header-actions a { text-decoration: none; color: var(--text-secondary); }
+.account-btn { color: var(--text-primary); font-weight: 500; }
 
-  async function renderRecommended() {
-    const grid = document.getElementById("recommendGrid");
-    const docs = await usrdLoadDocuments();
+/* ============================================================
+   🟡 FIX VÀNG: Hero section — thêm ảnh Trái Đất 4K làm background
+   - Dùng ảnh NASA public domain (Blue Marble)
+   - Overlay hai lớp: ảnh opacity 75% + gradient đen để text đọc được
+   - Ảnh cover toàn bộ hero, không bị lặp
+   ============================================================ */
+.hero {
+  position: relative;
+  background-color: var(--text-primary); /* fallback khi ảnh chưa load */
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(10, 10, 18, 0.82) 0%,
+      rgba(10, 10, 18, 0.55) 50%,
+      rgba(10, 10, 18, 0.30) 100%
+    ),
+    url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/2048px-The_Blue_Marble_%28remastered%29.jpg');
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  padding: 3.5rem 0;
+  border-bottom: 3px solid var(--fill-accent);
+  overflow: hidden;
+}
 
-    if (docs.length === 0) {
-      grid.innerHTML = '<p class="empty-state">Chưa có tài liệu nào. Thêm dữ liệu vào Google Sheet để hiển thị ở đây.</p>';
-      return;
-    }
+/* Hiệu ứng blur nhẹ ở cạnh phải để ảnh hoà với nền */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 70% 50%,
+    transparent 30%,
+    rgba(10, 10, 18, 0.45) 100%
+  );
+  pointer-events: none;
+}
 
-    const top4 = docs.slice(0, 4);
-    grid.innerHTML = top4.map(doc => `
-      <div class="doc-card">
-        <div class="doc-meta"><span class="doc-type">${escapeHtml(doc.type || "Tài liệu")}</span></div>
-        <h4 class="doc-title">${escapeHtml(doc.title)}</h4>
-        <p class="doc-desc">${escapeHtml(doc.desc)}</p>
-        <p class="doc-author">${escapeHtml(doc.author || "Chưa rõ tác giả")}</p>
-        <div style="margin-top:10px;">${usrdActionButton(doc)}</div>
-      </div>
-    `).join("");
-  }
+.hero .wrap { position: relative; z-index: 1; }
 
-  renderRecommended();
-</script>
-</body>
-</html>
+.hero-eyebrow { font-size: 12px; color: var(--neutral-400); letter-spacing: 0.5px; margin-bottom: 6px; }
+.hero h1 { font-family: var(--font-voice); font-weight: 500; font-size: 30px; color: var(--on-primary); margin-bottom: 0.75rem; line-height: 1.3; }
+.hero p { font-size: 14px; color: var(--neutral-300); max-width: 580px; line-height: 1.6; margin-bottom: 1.75rem; }
+.search-row { display: flex; max-width: 560px; margin-bottom: 1rem; }
+.search-row input {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1px solid var(--on-primary);
+  border-right: none;
+  background: var(--on-primary);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font-sans);
+}
+.search-row input:focus { outline: none; }
+.search-row button {
+  background: var(--fill-accent);
+  color: var(--on-accent);
+  border: 1px solid var(--fill-accent);
+  padding: 0 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+}
+.tags-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.tags-row span.label { font-size: 12px; color: var(--neutral-400); }
+.tag-pill {
+  font-size: 12px;
+  color: var(--neutral-300);
+  border: 1px solid var(--neutral-600);
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.tag-pill:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+/* ============================================================
+   🟣 FIX HỒNG: Section heading — bỏ border đậm rối mắt
+   - Thay bằng dải gradient blur kiểu shade
+   - Dùng backdrop-filter để tạo hiệu ứng kính mờ
+   ============================================================ */
+.section { padding: 2.5rem 0; border-bottom: 1px solid var(--border-stronger); }
+.section.alt { background: var(--surface-1); }
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem 0.5rem 0.85rem;
+
+  /* Shade effect: dải gradient đen mờ thay cho đường kẻ */
+  background: linear-gradient(
+    to right,
+    rgba(22, 22, 26, 0.07) 0%,
+    rgba(22, 22, 26, 0.03) 60%,
+    transparent 100%
+  );
+  border-left: 3px solid var(--text-primary); /* accent nhỏ bên trái */
+  border-radius: 0 4px 4px 0;
+
+  /* Bỏ border-bottom cũ */
+  /* border-bottom: 1px solid var(--text-primary); */  /* ĐÃ XÓA */
+}
+
+.section-head h2 {
+  font-family: var(--font-voice);
+  font-weight: 500;
+  font-size: 17px;
+  color: var(--text-primary);
+}
+.section-head a {
+  text-decoration: none;
+  color: var(--text-accent);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* Document grid */
+.doc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.doc-card { padding: 0 1.25rem; border-right: 1px solid var(--border); }
+.doc-card:first-child { padding-left: 0; }
+.doc-card:last-child { border-right: none; padding-right: 0; }
+.doc-meta { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.doc-type { font-size: 11px; font-weight: 500; color: var(--text-accent); text-transform: uppercase; letter-spacing: 0.3px; }
+.doc-date { font-size: 11px; color: var(--text-muted); }
+.doc-title { font-size: 14px; font-weight: 500; color: var(--text-primary); line-height: 1.4; margin-bottom: 8px; }
+.doc-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px; }
+.doc-author { font-size: 11px; color: var(--text-muted); }
+
+/* Learning profile */
+.profile-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.5rem; }
+.profile-grid .label-sm { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.profile-grid h3 { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: 10px; }
+.profile-grid p { font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; }
+.profile-grid a { text-decoration: none; color: var(--text-accent); font-size: 12px; }
+.stat-block-title { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 12px; }
+.stat-list { font-size: 12px; color: var(--text-secondary); line-height: 2.1; list-style: none; }
+.stat-list b { color: var(--text-primary); font-weight: 500; }
+.donut-wrap { display: flex; align-items: center; gap: 1.25rem; }
+.donut-legend { font-size: 11px; color: var(--text-secondary); line-height: 2; }
+
+/* Footer */
+.site-footer { background: var(--text-primary); padding: 2.5rem 0; }
+.footer-cols {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--neutral-600);
+}
+.footer-cols .brand-name { color: var(--on-primary); }
+.footer-cols p { font-size: 12px; color: var(--neutral-400); line-height: 1.6; margin-top: 10px; }
+.footer-col h4 { font-size: 12px; font-weight: 500; color: var(--on-primary); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 10px; }
+.footer-col a { display: block; text-decoration: none; font-size: 12px; color: var(--neutral-400); margin-bottom: 6px; }
+.copyright { margin-top: 1.5rem; text-align: center; font-size: 11px; color: var(--neutral-500); }
+
+/* Simple page (Tra cứu, Danh mục, Đề xuất, Đọc sau) */
+.page-header { padding: 2rem 0; border-bottom: 1px solid var(--text-primary); }
+.page-header h1 { font-family: var(--font-voice); font-weight: 500; font-size: 24px; }
+.page-header p { font-size: 13px; color: var(--text-secondary); margin-top: 6px; }
+.filter-row { display: flex; gap: 12px; margin: 2rem 0; flex-wrap: wrap; }
+.filter-row select, .filter-row input {
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+.doc-list { display: flex; flex-direction: column; }
+.doc-list-item { padding: 1.5rem 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; }
+.save-btn { background: transparent; border: 1px solid var(--border-strong); color: var(--text-secondary); padding: 6px 12px; cursor: pointer; font-size: 12px; font-family: var(--font-sans); text-decoration: none; display: inline-block; }
+.save-btn:hover { border-color: var(--text-primary); color: var(--text-primary); }
+.empty-state { padding: 3rem 0; text-align: center; color: var(--text-secondary); font-size: 14px; }
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .wrap { padding: 0 2rem; }
+  .site-header { padding: 0.9rem 2rem; }
+}
+@media (max-width: 900px) {
+  nav.main-nav { order: 3; width: 100%; justify-content: space-between; }
+  .doc-grid, .profile-grid, .footer-cols { grid-template-columns: 1fr 1fr; }
+  .doc-card { border-right: none; border-bottom: 1px solid var(--border); padding: 1rem 0; }
+  .doc-card:first-child { padding-top: 0; }
+  .wrap { padding: 0 1.5rem; }
+  .site-header { padding: 0.9rem 1.5rem; }
+}
+@media (max-width: 600px) {
+  .doc-grid, .profile-grid, .footer-cols { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 22px; }
+  .wrap { padding: 0 1rem; }
+  .site-header { padding: 0.9rem 1rem; }
+}
