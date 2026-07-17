@@ -315,7 +315,7 @@ nav.main-nav a:hover { color: var(--text-primary); border-bottom-color: var(--te
     padding: 2rem 0;
     background-position: center center;
   }
-  .hero h1 { font-size: 22px; }
+  .hero h1 { font-size: 20px; }
   .hero p { font-size: 13px; }
 
   /* Search bar full width */
