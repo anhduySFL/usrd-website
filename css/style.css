@@ -52,14 +52,22 @@ a { color: inherit; }
 .site-header {
   background: var(--surface-2);
   border-bottom: 1px solid var(--text-primary);
-  padding: 0.9rem 3rem; /* padding trực tiếp, không qua .wrap */
   width: 100%;
+  /* Không dùng .wrap bên trong — tự xử lý padding và layout */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.9rem 4rem;
+  box-sizing: border-box;
 }
-/* Nội dung bên trong header vẫn có max-width để không quá rộng trên 4K */
+/* Override .wrap bên trong header nếu partials.js vẫn dùng */
 .site-header .wrap {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0; /* đã có padding từ site-header */
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -86,15 +94,15 @@ nav.main-nav a:hover { color: var(--text-primary); border-bottom-color: var(--te
    ============================================================ */
 .hero {
   position: relative;
-  background-color: var(--text-primary); /* fallback khi ảnh chưa load */
+  background-color: #0a0a12; /* fallback khi ảnh chưa load */
   background-image:
     linear-gradient(
       to right,
-      rgba(10, 10, 18, 0.82) 0%,
-      rgba(10, 10, 18, 0.55) 50%,
-      rgba(10, 10, 18, 0.30) 100%
+      rgba(10, 10, 18, 0.85) 0%,
+      rgba(10, 10, 18, 0.60) 45%,
+      rgba(10, 10, 18, 0.25) 100%
     ),
-    url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/2048px-The_Blue_Marble_%28remastered%29.jpg');
+    url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=2000&q=80&fit=crop');
   background-size: cover;
   background-position: center right;
   background-repeat: no-repeat;
