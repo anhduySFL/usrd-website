@@ -102,7 +102,7 @@ nav.main-nav a:hover { color: var(--text-primary); border-bottom-color: var(--te
       rgba(10, 10, 18, 0.60) 45%,
       rgba(10, 10, 18, 0.25) 100%
     ),
-    url('../images/moutains.jpg');
+    url('../images/moutains');
   background-size: cover;
   background-position: center right;
   background-repeat: no-repeat;
@@ -352,4 +352,35 @@ nav.main-nav a:hover { color: var(--text-primary); border-bottom-color: var(--te
   font-size: 11px;
   margin-top: 4px;
   min-height: 16px;
+}
+
+/* ============================================================
+   NÚT LƯU
+   ============================================================ */
+.save-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: var(--font-sans);
+  transition: all 0.15s;
+}
+.save-toggle-btn:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+.save-toggle-btn.saved {
+  border-color: var(--fill-accent);
+  color: var(--fill-accent);
+  background: rgba(24, 95, 165, 0.06);
+}
+.remove-btn {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+.remove-btn:hover {
+  border-color: #c0392b;
+  color: #c0392b;
 }
