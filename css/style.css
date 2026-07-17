@@ -312,9 +312,10 @@ nav.main-nav a:hover { color: var(--text-primary); border-bottom-color: var(--te
 
   /* Hero mobile */
   .hero {
-    padding: 1rem 0;
-    background-position: center center;
-  }
+  padding: 1rem 0;
+  background-position: center center;
+  background-size: cover;  /* thêm dòng này */
+}
   .hero h1 { font-size: 16px; }
   .hero p { font-size: 11px; }
 
