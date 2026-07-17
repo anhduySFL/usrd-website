@@ -312,11 +312,11 @@ nav.main-nav a:hover { color: var(--text-primary); border-bottom-color: var(--te
 
   /* Hero mobile */
   .hero {
-    padding: 2rem 0;
+    padding: 1rem 0;
     background-position: center center;
   }
   .hero h1 { font-size: 16px; }
-  .hero p { font-size: 13px; }
+  .hero p { font-size: 11px; }
 
   /* Search bar full width */
   .search-row { max-width: 100%; }
