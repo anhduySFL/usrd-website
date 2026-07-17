@@ -119,12 +119,40 @@
 
 <script src="js/partials.js"></script>
 <script src="js/data.js"></script>
+<script src="js/save.js"></script>
 <script>
   function escapeHtml(str) {
     const div = document.createElement("div");
     div.textContent = str;
     return div.innerHTML;
   }
+
+  async function renderRecommended() {
+    const grid = document.getElementById("recommendGrid");
+    const docs = await usrdLoadDocuments();
+
+    if (docs.length === 0) {
+      grid.innerHTML = '<p class="empty-state">Chưa có tài liệu nào. Thêm dữ liệu vào Google Sheet để hiển thị ở đây.</p>';
+      return;
+    }
+
+    const top4 = docs.slice(0, 4);
+    grid.innerHTML = top4.map(doc => `
+      <div class="doc-card">
+        <div class="doc-meta"><span class="doc-type">${escapeHtml(doc.type || "Tài liệu")}</span></div>
+        <h4 class="doc-title">${escapeHtml(doc.title)}</h4>
+        <p class="doc-desc">${escapeHtml(doc.desc)}</p>
+        <p class="doc-author">${escapeHtml(doc.author || "Chưa rõ tác giả")}</p>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          ${usrdActionButton(doc)}
+          ${usrdSaveButton(doc)}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  renderRecommended();
+</script>
 
   async function renderRecommended() {
     const grid = document.getElementById("recommendGrid");
