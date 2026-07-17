@@ -7,23 +7,76 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <div id="usrd-header" data-active="doc-sau.html"></div>
 
 <section class="page-header">
   <div class="wrap">
     <h1>Đọc sau</h1>
-    <p>Danh sách tài liệu bạn đã lưu để đọc sau.</p>
+    <p>Danh sách tài liệu bạn đã lưu.</p>
   </div>
 </section>
 
 <section class="section" style="border-bottom:none;">
   <div class="wrap">
-    <p class="empty-state">Bạn chưa lưu tài liệu nào. Bấm "Lưu" ở trang Tra cứu hoặc Đề xuất để thêm vào đây.</p>
+    <div id="savedList"></div>
   </div>
 </section>
 
 <div id="usrd-footer"></div>
 <script src="js/partials.js"></script>
+<script src="js/data.js"></script>
+<script>
+function escapeHtml(str) {
+  const d = document.createElement("div");
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function usrdGetSaved() {
+  try { return JSON.parse(localStorage.getItem("usrd_saved") || "[]"); }
+  catch { return []; }
+}
+
+function usrdRemove(slug) {
+  const saved = usrdGetSaved().filter(s => s !== slug);
+  localStorage.setItem("usrd_saved", JSON.stringify(saved));
+  renderSaved();
+}
+
+async function renderSaved() {
+  const container = document.getElementById("savedList");
+  const saved = usrdGetSaved();
+
+  if (saved.length === 0) {
+    container.innerHTML = '<p class="empty-state">Bạn chưa lưu tài liệu nào. Bấm "Lưu" ở trang Tra cứu hoặc Đề xuất để thêm vào đây.</p>';
+    return;
+  }
+
+  const docs = await usrdLoadDocuments();
+  const savedDocs = saved.map(slug => docs.find(d => d.slug === slug)).filter(Boolean);
+
+  if (savedDocs.length === 0) {
+    container.innerHTML = '<p class="empty-state">Không tìm thấy tài liệu đã lưu. Có thể tài liệu đã bị xóa khỏi hệ thống.</p>';
+    return;
+  }
+
+  container.innerHTML = `<div class="doc-list">` + savedDocs.map(doc => `
+    <div class="doc-list-item">
+      <div>
+        <span class="doc-type">${escapeHtml(doc.type || "Tài liệu")}</span>
+        <h4 class="doc-title" style="margin:6px 0 6px;">${escapeHtml(doc.title)}</h4>
+        <p class="doc-desc">${escapeHtml(doc.desc)}</p>
+        <p class="doc-author" style="margin-top:6px;">${escapeHtml(doc.author || "Chưa rõ tác giả")}</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
+        ${usrdActionButton(doc)}
+        <button class="save-btn remove-btn" onclick="usrdRemove('${escapeHtml(doc.slug)}')">✕ Bỏ lưu</button>
+      </div>
+    </div>
+  `).join("") + `</div>`;
+}
+
+renderSaved();
+</script>
 </body>
 </html>
