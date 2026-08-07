@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tri Vân — Tài liệu VNU và nhiều trường đại học khác</title>
+<meta name="description" content="Tri Vân — Tổng hợp tài liệu học tập, bài giảng, đề thi, đề cương dành cho sinh viên VNU và nhiều trường đại học khác.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="usrd-header" data-active="index.html"></div>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Tri Vân</h1>
+    <p>Tổng hợp tài liệu học tập, bài giảng, đề thi, đề cương dành cho sinh viên VNU và nhiều trường đại học khác.</p>
+    <form class="search-row" action="tra-cuu.html" method="get">
+      <input type="text" name="q" placeholder="Tìm kiếm tài liệu, chủ đề, tác giả, trường đại học...">
+      <button type="submit">Tìm kiếm</button>
+    </form>
+    <div class="tags-row">
+      <span class="label">Phổ biến:</span>
+      <span class="tag-pill">Trí tuệ nhân tạo</span>
+      <span class="tag-pill">Kinh tế</span>
+      <span class="tag-pill">Y học</span>
+      <span class="tag-pill">Khoa học Dữ liệu</span>
+      <span class="tag-pill">Chuyển đổi số</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Đề xuất dành cho bạn</h2>
+      <a href="de-xuat.html">Xem thêm →</a>
+    </div>
+    <div class="doc-grid" id="recommendGrid">
+      <p class="empty-state">Đang tải dữ liệu...</p>
+    </div>
+  </div>
+</section>
+
+<div id="usrd-footer"></div>
+
+<script src="js/partials.js"></script>
+<script src="js/data.js"></script>
+<script src="js/save.js"></script>
+<script>
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  async function renderRecommended() {
+    const grid = document.getElementById("recommendGrid");
+    const docs = await usrdLoadDocuments();
+
+    if (docs.length === 0) {
+      grid.innerHTML = '<p class="empty-state">Chưa có tài liệu nào. Thêm dữ liệu vào Google Sheet để hiển thị ở đây.</p>';
+      return;
+    }
+
+    const top4 = docs.slice(0, 4);
+    grid.innerHTML = top4.map(doc => `
+      <div class="doc-card">
+        ${usrdThumbnailHtml(doc, "doc-thumb")}
+        <div class="doc-meta"><span class="doc-type">${escapeHtml(doc.type || "Tài liệu")}</span></div>
+        <h4 class="doc-title">${escapeHtml(doc.title)}</h4>
+        <p class="doc-desc">${escapeHtml(doc.desc)}</p>
+        <p class="doc-author">${escapeHtml(doc.author || "Chưa rõ tác giả")}</p>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          ${usrdActionButton(doc)}
+          ${usrdSaveButton(doc)}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  renderRecommended();
+</script>
+</body>
+</html>
