@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài viết — uSRD</title>
+<title>Bài viết — Tri Vân</title>
 <link rel="stylesheet" href="css/style.css">
 <style>
   .article-wrap { max-width: 760px; margin: 0 auto; padding: 3rem 2rem; }
@@ -71,11 +71,11 @@
       <a href="tra-cuu.html" class="back-link">← Về trang Tra cứu</a>
       <p class="article-eyebrow">${escapeHtml(doc.type || "Bài viết")}</p>
       <h1 class="article-title">${escapeHtml(doc.title)}</h1>
-      <p class="article-meta"><b>${escapeHtml(doc.author || "uSRD")}</b> · ${escapeHtml(doc.desc)}</p>
+      <p class="article-meta"><b>${escapeHtml(doc.author || "Tri Vân")}</b> · ${escapeHtml(doc.desc)}</p>
       <div class="article-body">${paragraphs}</div>
     `;
 
-    document.title = doc.title + " — uSRD";
+    document.title = doc.title + " — Tri Vân";
   }
 
   renderArticle();

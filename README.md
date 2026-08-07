@@ -1,4 +1,4 @@
-# uSRD — Kho tàng học liệu sinh viên
+# Tri Vân — Tài liệu VNU và nhiều trường đại học khác
 
 Website tĩnh (HTML/CSS/JS thuần) — không cần cài đặt gì để chạy, không tốn phí hosting.
 
