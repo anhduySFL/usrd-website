@@ -13,6 +13,10 @@
   .article-meta b { color: var(--text-primary); font-weight: 500; }
   .article-body { font-size: 16px; line-height: 1.85; color: var(--text-primary); }
   .article-body p { margin-bottom: 1.25rem; }
+  .article-body ul { margin: 0 0 1.25rem 1.25rem; }
+  .article-body li { margin-bottom: 0.5rem; }
+  .article-body strong { font-weight: 600; }
+  .article-body .media-embed { margin: 1.75rem 0; }
   .back-link { display: inline-block; margin-bottom: 1.5rem; font-size: 13px; color: var(--text-accent); text-decoration: none; }
 </style>
 </head>
@@ -64,15 +68,19 @@
       return;
     }
 
-    const paragraphs = doc.content.split("\n").filter(p => p.trim() !== "")
-      .map(p => `<p>${escapeHtml(p)}</p>`).join("");
+    const cover = doc.video
+      ? usrdVideoEmbedHtml(doc.video)
+      : (doc.image ? usrdImageEmbedHtml(doc.image) : "");
+
+    const bodyHtml = usrdRenderContent(doc.content);
 
     container.innerHTML = `
       <a href="tra-cuu.html" class="back-link">← Về trang Tra cứu</a>
       <p class="article-eyebrow">${escapeHtml(doc.type || "Bài viết")}</p>
       <h1 class="article-title">${escapeHtml(doc.title)}</h1>
       <p class="article-meta"><b>${escapeHtml(doc.author || "Tri Vân")}</b> · ${escapeHtml(doc.desc)}</p>
-      <div class="article-body">${paragraphs}</div>
+      ${cover}
+      <div class="article-body">${bodyHtml}</div>
     `;
 
     document.title = doc.title + " — Tri Vân";

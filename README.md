@@ -31,7 +31,12 @@ usrd-website/
 1. Đăng nhập **vercel.com** → bấm **"Add New..."** → **"Project"**
 2. Chọn repository `usrd-website` vừa tạo → bấm **"Import"**
 3. Không cần chỉnh gì cả (vì là site tĩnh) → bấm **"Deploy"**
-4. Sau ~30 giây, Vercel đưa cho bạn 1 link dạng `usrd-website.vercel.app` — đó là website sống, ai cũng truy cập được
+4. Sau ~30 giây, Vercel đưa cho bạn 1 link dạng `<tên-repo>.vercel.app` — đó là website sống, ai cũng truy cập được
+
+> **Lưu ý về tên miền:** link `.vercel.app` được đặt tự động theo **tên repository trên GitHub**, không liên quan đến nội dung file. Nếu repo hiện tại tên là `usrd-website`, link sẽ mãi là `usrd-website.vercel.app` dù nội dung web đã đổi thành "Tri Vân". Muốn đổi:
+> - **Cách nhanh, miễn phí:** vào Vercel → chọn project → **Settings → Domains**, xoá domain cũ và gõ tên mới (ví dụ `tri-van.vercel.app`) → **Save**.
+> - **Cách chuyên nghiệp:** mua domain riêng (ví dụ `trivan.vn` trên Mắt Bão, Nhân Hòa...) rồi vào Vercel → **Settings → Domains** → **Add** → nhập domain đã mua → làm theo hướng dẫn trỏ DNS. Sau ~15 phút web sẽ chạy trên đúng `trivan.vn`.
+> - Đổi tên repo GitHub (Settings → Repository name) chỉ đổi tên kho lưu trữ code, không bắt buộc, nhưng nên đổi cho đồng bộ (ví dụ thành `tri-van-website`).
 
 ### Bước 4 — Mỗi lần muốn cập nhật (sửa nội dung, thêm tài liệu)
 1. Vào lại repository trên GitHub → vào đúng file cần sửa (vd `index.html`)
@@ -42,10 +47,13 @@ usrd-website/
 
 Website đã được nối với 1 **Google Sheet** — đây là nơi duy nhất bạn cần vào để thêm tài liệu.
 
-### Cấu trúc Sheet (đúng 8 cột, đừng đổi tên cột)
+### Cấu trúc Sheet (10 cột, đừng đổi tên cột)
 ```
-Tên | Loại | Tác giả | Mô tả | Link file | Trạng thái | Định dạng | Nội dung
+Tên | Loại | Tác giả | Mô tả | Link file | Trạng thái | Định dạng | Nội dung | Ảnh | Video
 ```
+- 2 cột cuối **"Ảnh"** và **"Video"** là **không bắt buộc** — để trống nếu chưa có. Nếu điền, đó sẽ là ảnh/video bìa hiện đầu bài viết, đồng thời ảnh sẽ hiện luôn thành thumbnail nhỏ trên các thẻ tài liệu ở Trang chủ, Tra cứu.
+- Cột "Ảnh": dán link ảnh trực tiếp (ví dụ link ảnh từ Google Drive dạng xem trực tiếp, hoặc link ảnh bất kỳ đuôi .jpg/.png/.webp)
+- Cột "Video": dán link YouTube (mọi định dạng link đều được) hoặc link video .mp4 trực tiếp
 
 ### Hai loại nội dung — bạn chọn qua cột "Định dạng"
 
@@ -53,6 +61,28 @@ Tên | Loại | Tác giả | Mô tả | Link file | Trạng thái | Định dạ
 - Điền đầy đủ nội dung vào cột **"Nội dung"**
 - Xuống dòng giữa các đoạn văn: trong Google Sheets bấm **Alt + Enter** (Windows) hoặc **Option + Enter** (Mac) để xuống dòng trong cùng 1 ô — mỗi lần xuống dòng sẽ tự thành 1 đoạn văn riêng trên web
 - Cột "Link file" có thể để trống
+
+**Định dạng chữ trong ô "Nội dung"** (Google Sheet không giữ được chữ đậm/nghiêng khi xuất dữ liệu, nên gõ ký hiệu sau để web tự hiển thị đẹp):
+| Muốn có... | Gõ trong ô Nội dung |
+|---|---|
+| Đoạn văn mới | Xuống dòng bằng Alt+Enter |
+| **Chữ đậm** | `**chữ đậm**` |
+| *Chữ nghiêng* | `*chữ nghiêng*` |
+| Danh sách gạch đầu dòng | Mỗi dòng bắt đầu bằng `- ` (ví dụ: `- Ý thứ nhất`) |
+| Chèn ảnh giữa bài | Một dòng riêng: `[anh: link-ảnh]` |
+| Chèn video giữa bài | Một dòng riêng: `[video: link-video]` |
+
+Ví dụ 1 ô "Nội dung" hoàn chỉnh (mỗi dòng dưới đây là 1 lần Alt+Enter):
+```
+Đây là đoạn mở đầu giới thiệu chủ đề.
+**Phần 1: Bối cảnh nghiên cứu**
+Đoạn nội dung chi tiết cho phần 1.
+[anh: https://drive.google.com/uc?id=xxxxx]
+- Ý thứ nhất cần lưu ý
+- Ý thứ hai cần lưu ý
+[video: https://youtu.be/xxxxxxxxxxx]
+Đoạn kết luận cuối bài.
+```
 
 **2. `Tệp đính kèm`** (hoặc để trống cột Định dạng) → Nút bấm sẽ mở file PDF/Word ở tab mới.
 - Dùng cho tiểu luận, niên luận, luận văn, báo cáo dài — những tài liệu cần giữ nguyên định dạng trình bày

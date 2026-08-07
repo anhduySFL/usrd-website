@@ -61,6 +61,8 @@ function normalizeDoc(row, index) {
     status: row["Trạng thái"] || "",
     format: format || "Tệp đính kèm", // mặc định là tệp đính kèm nếu bỏ trống
     content: row["Nội dung"] || "",
+    image: row["Ảnh"] || row["Ảnh bìa"] || "",
+    video: row["Video"] || row["Video bìa"] || "",
     slug: usrdSlugify(title) || `bai-viet-${index}`
   };
 }
@@ -77,6 +79,99 @@ async function usrdLoadDocuments() {
     console.error("Tri Vân: lỗi tải dữ liệu tài liệu", err);
     return [];
   }
+}
+
+// ============================================================
+// XỬ LÝ ĐỊNH DẠNG NỘI DUNG (cột "Nội dung" trong Sheet)
+// Vì Google Sheet xuất ra CSV chỉ là văn bản thuần (không giữ được
+// chữ đậm/nghiêng/canh lề khi copy-paste), các hàm dưới đây cho phép
+// gõ vài ký hiệu đơn giản trong ô "Nội dung" để web tự hiển thị đẹp:
+//
+//   - Xuống dòng (Alt+Enter trong Sheet)  → mỗi dòng là 1 đoạn văn mới
+//   - Dòng bắt đầu bằng "- "              → gộp thành danh sách gạch đầu dòng
+//   - **chữ**                              → in đậm
+//   - *chữ*                                → in nghiêng
+//   - [anh: link-ảnh]                      → chèn ảnh ngay vị trí đó
+//   - [video: link-video]                  → chèn video (hỗ trợ link YouTube
+//                                             hoặc link video .mp4 trực tiếp)
+// ============================================================
+
+function usrdEscapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// In đậm/nghiêng trong 1 dòng văn bản
+function usrdInlineFormat(text) {
+  let html = usrdEscapeHtml(text);
+  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
+  return html;
+}
+
+// Nhận diện link YouTube (mọi định dạng) -> trả về link nhúng, hoặc null nếu không phải YouTube
+function usrdYouTubeEmbedUrl(url) {
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+  return m ? `https://www.youtube.com/embed/${m[1]}` : null;
+}
+
+// Sinh HTML cho 1 khối video (tự nhận diện YouTube hay link video thường)
+function usrdVideoEmbedHtml(url) {
+  const trimmed = url.trim();
+  const yt = usrdYouTubeEmbedUrl(trimmed);
+  if (yt) {
+    return `<div class="media-embed"><iframe src="${usrdEscapeHtml(yt)}" title="Video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+  }
+  return `<div class="media-embed"><video controls src="${usrdEscapeHtml(trimmed)}"></video></div>`;
+}
+
+// Sinh HTML cho 1 khối ảnh
+function usrdImageEmbedHtml(url) {
+  return `<div class="media-embed"><img src="${usrdEscapeHtml(url.trim())}" alt="" loading="lazy"></div>`;
+}
+
+// Hàm chính: chuyển nội dung thô từ Sheet -> HTML hoàn chỉnh cho trang bài viết
+function usrdRenderContent(raw) {
+  if (!raw || !raw.trim()) return "";
+  const lines = raw.split("\n");
+  let html = "";
+  let listBuffer = [];
+
+  function flushList() {
+    if (listBuffer.length) {
+      html += `<ul>${listBuffer.map(li => `<li>${usrdInlineFormat(li)}</li>`).join("")}</ul>`;
+      listBuffer = [];
+    }
+  }
+
+  lines.forEach(rawLine => {
+    const line = rawLine.trim();
+    if (!line) { flushList(); return; }
+
+    const imgMatch = line.match(/^\[\s*(?:anh|ảnh|image|img)\s*:\s*(.+?)\s*\]$/i);
+    const vidMatch = line.match(/^\[\s*video\s*:\s*(.+?)\s*\]$/i);
+
+    if (imgMatch) { flushList(); html += usrdImageEmbedHtml(imgMatch[1]); return; }
+    if (vidMatch) { flushList(); html += usrdVideoEmbedHtml(vidMatch[1]); return; }
+
+    if (/^[-*]\s+/.test(line)) {
+      listBuffer.push(line.replace(/^[-*]\s+/, ""));
+      return;
+    }
+
+    flushList();
+    html += `<p>${usrdInlineFormat(line)}</p>`;
+  });
+  flushList();
+  return html;
+}
+
+// Sinh HTML cho ảnh đại diện (thumbnail) của doc-card, dùng ở nhiều trang.
+// Trả về chuỗi rỗng nếu tài liệu không có ảnh -> layout tự động không chừa khoảng trống thừa.
+function usrdThumbnailHtml(doc, cssClass) {
+  if (!doc.image) return "";
+  return `<div class="${cssClass}"><img src="${usrdEscapeHtml(doc.image)}" alt="" loading="lazy"></div>`;
 }
 
 // Sinh HTML cho nút hành động
